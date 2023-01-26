@@ -31,3 +31,20 @@ Param(
 )
 
 # Start of script
+
+# Retrieve list of AD users with direct reports
+$ManagementList = Get-ADUser -Filter { (directReports -like "*") -and (enabled -eq $true) } -Properties name,mail,directReports | Select-Object name,mail,directReports | Sort-Object name
+
+$ManagerCount = $ManagementList.Count
+Write-Host $ManagerCount
+
+ForEach ($Manager in $ManagementList)
+{
+    $ManagerDirectReports = $Manager | Select-Object -ExpandProperty directReports
+    $DirectReportCount = $ManagerDirectReports.Count
+    Write-Host $DirectReportCount
+    ForEach ($DirectReport in $ManagerDirectReports)
+    {
+        #Write-Host $DirectReport
+    }
+}
