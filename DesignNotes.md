@@ -5,15 +5,14 @@ The generated report will be used to review each manager's user list to find use
 This script wouldn't be necessary with an onboarding/offboarding process that was timelier.
 
 
-Active Directory users have an attribute, directReports. If set properly, manager/supervisor staff are listed. This is a manual task and may not be used in all environments.
+Active Directory users have an attribute, directReports. This attribute is used to list the user accounts with the account listed in their manager field.
+Setting the manager field on a user account is a manual process and is required for this script to function.
 
 
 
-
-Inputs
-
+Script Inputs
 
 
-Outputs
+Script Outputs
 IT report with details around last login time, password last changed, password expired, etc.
 Manager report with details around user only.
