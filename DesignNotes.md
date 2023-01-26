@@ -5,6 +5,11 @@ The generated report will be used to review each manager's user list to find use
 This script wouldn't be necessary with an onboarding/offboarding process that was timelier.
 
 
+Active Directory users have an attribute, directReports. If set properly, manager/supervisor staff are listed. This is a manual task and may not be used in all environments.
+
+
+
+
 Inputs
 
 
