@@ -8,40 +8,40 @@
 .PARAMETER Param2
     Details of parameter 2
 .EXAMPLE
-	.\UserReviewReport.ps1
+	.\Export-UserReviewReport.ps1
 	Example of running the script
 .EXAMPLE
-	.\UserReviewReport.ps1 -Param1 -Param2
+	.\Export-UserReviewReport.ps1 -Param1 -Param2
 	Example of running the script with parameters
 .NOTES
 	Additional notes regarding the script
 
-	Script:		UserReviewReport.ps1
-	Author:		Mike Daniels
-    Created:		Jan-05-2023
+	Script:		    Export-UserReviewReport.ps1
+	Author:		    Mike Daniels
+    Created:	    Jan-05-2023
     Last Updated:	Jan-31-2023
     	
 	Changelog
-		0.1		Initial version of UserReviewReport.ps1 script
+		0.1		Initial version of Export-UserReviewReport.ps1 script
         0.2     Added basic progress bars for manager and staff processing
         0.3     Added CSV output
         0.4     Add some script prerequisite checks, modify output to not automatically generate the IT report.
+        0.5     Add some additional command line switches for future use, rename others for new flow.
 
     References
     https://social.technet.microsoft.com/Forums/ie/en-US/34cfcfaf-7783-4e9a-b93f-e660a09ae093/count-and-ad-group-membership?forum=winserverpowershell
 
 #>
 
-
-
 [CmdletBinding()]
 
 Param(
-    [switch]$HTML = $false,
     [switch]$CSV = $false,
+    [switch]$HTML = $false,
+    [switch]$IncludeContacts = $false,
     [switch]$ITReport = $false,
     [switch]$ManagerReport = $false,
-    [string]$CSVFilename = "csvoutput.csv"
+    [string]$ReportFilename = "Export-UserReviewReport"
 )
 
 # Start of script
@@ -61,7 +61,14 @@ Catch {
 If ($CSV -eq $false -and $HTML -eq $false)
 {
     # Display usage and exit script
-    Write-Host "`nError: No output format selected. Script must be run with at least one of -HTML or -CSV specified.`nUsage: .\UserReviewReport.ps1 [-HTML] [-CSV] [-ManagerReport]`n" -ForegroundColor Red
+    Write-Host "`nError: No output format selected. Script must be run with at least one of -HTML or -CSV specified.`nUsage: .\Export-UserReviewReport.ps1 [-HTML] [-CSV] [-ManagerReport]`n" -ForegroundColor Red
+    Break
+}
+
+If ($ITReport -eq $false -and $ManagerReport -eq $false)
+{
+    # Display usage and exit script
+    Write-Host "`nError: No output reports selected. Script must be run with at least one of -ITReport or -ManagerReport specified.`nUsage: .\Export-UserReviewReport.ps1 [-HTML] [-CSV] [-ManagerReport]`n" -ForegroundColor Red
     Break
 }
 
@@ -121,9 +128,19 @@ ForEach ($Manager in $ManagementList)
 # Update the manager status bar to completed
 Write-Progress -Activity "Processing Management Users" -Status "Complete" -Completed -Id 0
 
+# If CSV format is specified, generate CSV outputs
 If ($CSV)
 {
-    # Create CSV output file
-    $CSVOutputContent = $ReportContent | Select-Object 'ManagerName','Name','Title','Email','AccountName','AccountEnabled','AccountExpiration','AccountLastLogon','AccountPasswordLastSet','AccountPasswordExpired','AccountPasswordNeverExpires'
-    $CSVOutputContent | Export-Csv -NoTypeInformation -Path $CSVFilename
+    # If ITReport is selected, output the IT formmated report   
+    If ($ManagerReport)
+    {
+        Break
+    }
+
+    # If ITReport is selected, output the IT formmated report
+    If ($ITReport)
+    {
+        $ITReportContent = $ReportContent | Select-Object 'ManagerName','Name','Title','Email','AccountName','AccountEnabled','AccountExpiration','AccountLastLogon','AccountPasswordLastSet','AccountPasswordExpired','AccountPasswordNeverExpires'
+        $ITReportContent | Export-Csv -NoTypeInformation -Path $ReportFilename
+    }
 }
