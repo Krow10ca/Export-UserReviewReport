@@ -26,3 +26,8 @@ Script Inputs
 Script Outputs
 IT report with details around last login time, password last changed, password expired, etc.
 Manager report with details around user only.
+
+
+2023-02-01
+Only active manager accounts are pulled, but the same is not done for direct reports.
+
