@@ -147,6 +147,7 @@ ForEach ($Manager in $ManagementList)
                 'AccountPasswordLastSet' = $DirectReportUserData.PasswordLastSet
                 'AccountPasswordExpired' = $DirectReportUserData.PasswordExpired
                 'AccountPasswordNeverExpires' = $DirectReportUserData.PasswordNeverExpires
+            }
         }
     }
 
