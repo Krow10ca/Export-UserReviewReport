@@ -1,14 +1,14 @@
-RATIONALE
+# RATIONALE
 User management can be difficult. In larger organizations that do not have a well defined offboarding process, stale accounts can remain in the environment long after employees have left. This script is intended to be used on a regular basis to provide managers and supervisors within an organization a list of their employees for confirmation.
 
-INTENT
+# INTENT
 The intent of the script is to comb through Active Directory and return a list of supervisors/managers/other that have staff reporting to them.
 This list will be used to generate a report of their reporting users, and the applicable stats for determining if the account is stale.
 
 The generated report will be used to review each manager's user list to find users that are no longer with the company.
 This script wouldn't be necessary with an onboarding/offboarding process that was timelier.
 
-
+# DESIGN OPTIONS
 Active Directory users have an attribute, directReports. This attribute is used to list the user accounts with the account listed in their manager field.
 Setting the manager field on a user account is a manual process and is required for this script to function.
 
@@ -18,16 +18,5 @@ Update script name to approved verb-noun structure ala get-verb
 Get-UserReviewReport.ps1
 Export-UserReviewReport.ps1
 
-
-
-Script Inputs
-
-
-Script Outputs
-IT report with details around last login time, password last changed, password expired, etc.
-Manager report with details around user only.
-
-
-2023-02-01
-Only active manager accounts are pulled, but the same is not done for direct reports.
-
+# FUTURE FUNCTIONALITY
+-Email managers their reports directly for review.
